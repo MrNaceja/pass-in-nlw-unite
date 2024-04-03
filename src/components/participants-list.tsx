@@ -1,7 +1,36 @@
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, MoreHorizontal, Search } from "lucide-react"
+import { Search } from "lucide-react"
 import { Row } from "./layout/row"
 import { Column } from "./layout/column"
-import { Button } from "./button"
+import { Table } from "./table"
+
+import dayjs from "dayjs"
+import relativeTime from 'dayjs/plugin/relativeTime'
+import updateLocale from 'dayjs/plugin/updateLocale'
+import 'dayjs/locale/pt-br'
+
+dayjs.locale('pt-br')
+dayjs.extend(relativeTime)
+dayjs.extend(updateLocale)
+
+dayjs.updateLocale('pt-br', {
+  relativeTime: {
+    future: "Há %s",
+    past: "%s atrás",
+    s: 'agora a pouco',
+    m: "Há um minuto",
+    mm: "%d minutos",
+    h: "Há uma hora",
+    hh: "%d horas",
+    d: "Há um dia",
+    dd: "%d dias",
+    M: "Há um mês",
+    MM: "%d meses",
+    y: "Há um ano",
+    yy: "%d anos"
+  }
+})
+
+import { participants } from "../data/fake-participants"
 
 export const ParticipantsList = () => {
     return (
@@ -16,57 +45,46 @@ export const ParticipantsList = () => {
                         </Row>
                     </Row>
                 </header>
-                <div className="border border-white/10 rounded-lg">
-                    <table className="w-full">
-                        <thead className="text-sm font-semibold text-left">
-                            <tr>
-                                <th className="py-3 px-4 w-10">
-                                    <input type="checkbox" className="rounded-sm bg-zinc-950 border-white/10 outline-none ring-0 focus:ring-0 focus:shadow-none cursor-pointer"/>
-                                </th>
-                                <th className="py-3 px-4">Código</th>
-                                <th className="py-3 px-4">Participante</th>
-                                <th className="py-3 px-4">Data da inscrição</th>
-                                <th className="py-3 px-4">Data do check-in</th>
-                                <th className="py-3 px-4 w-10"></th>
-                            </tr>
-                        </thead>
-                        <tbody className="text-zinc-300 text-sm border-y border-white/10">
-                            {
-                                Array.from({ length: 10 }).map((_,i) => (
-                                    <tr key={i}>
-                                        <td className="py-3 px-4"><input type="checkbox" className="rounded-sm bg-zinc-950 border-white/10 outline-none ring-0 focus:ring-0 focus:shadow-none cursor-pointer"/></td>
-                                        <td className="py-3 px-4">1234</td>
-                                        <td className="py-3 px-4">
-                                            <Column className="gap-1">
-                                                <span className="font-semibold text-white">Eduardo Toriani</span>
-                                                <span>edutoriani13@gmail.com</span>
-                                            </Column>
-                                        </td>
-                                        <td className="py-3 px-4">5 dias atrás</td>
-                                        <td className="py-3 px-4">2 dias atrás</td>
-                                        <td className="py-3 px-4">
-                                            <Button icon={MoreHorizontal} />
-                                        </td>
-                                    </tr>
-                                ))
-                            }
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colSpan={3} className="py-3 px-4">Mostrando todos os resultados</td>
-                                <td colSpan={3} className="py-3 px-4 text-right">
-                                    <Row className="gap-1 inline-flex">
-                                        <span className="mr-5">1 Resultado de 10.</span>
-                                        <Button icon={ChevronsLeft}/>
-                                        <Button icon={ChevronLeft}/>
-                                        <Button icon={ChevronRight}/>
-                                        <Button icon={ChevronsRight}/>
-                                    </Row>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
+                <Table
+                    data={participants}
+                    columns={[
+                        {
+                            id: 'id',
+                            title: 'Código'
+                        },
+                        {
+                            id: 'name',
+                            title: 'Participante'
+                        },
+                        {
+                            id: 'subscribedAt',
+                            title: 'Data da inscrição'
+                        },
+                        {
+                            id: 'checkInAt',
+                            title: 'Data do check-in'
+                        }
+                    ]}
+                    renderContentColumnRow={(col, row) => {
+                        if (col.id == 'name') {
+                            return (
+                                <Column className="gap-1">
+                                    <span className="font-semibold text-white">{row.name}</span>
+                                    <span>{row.email}</span>
+                                </Column>
+                            )
+                        }
+                        if (col.id == 'checkInAt' || col.id == 'subscribedAt') {
+                            const dateAt = row[col.id]
+                            return (
+                                <span>
+                                    { dayjs().from(dateAt)  }
+                                </span>
+                            )
+                        }
+                        return <span>{ row[col.id] }</span>
+                    }}
+                />
             </Column>
         </main>
     )
