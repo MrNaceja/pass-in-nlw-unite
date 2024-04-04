@@ -39,6 +39,7 @@ const LIMIT_PARTICIPANTS_PER_PAGE = 10
 export const ParticipantsList = () => {
     const [participants, setParticipants] = useState<TParticipant[]>([])
     const [totalPages, setTotalPages] = useState(0)
+    const [loading, setLoading] = useState(false)
     const [page, setPage] = useState(() => (
         Number((new URLSearchParams(window.location.search)).get('page')) || 1
     ))
@@ -46,14 +47,14 @@ export const ParticipantsList = () => {
         (new URLSearchParams(window.location.search)).get('search') || ''
     ))
 
-    const changePage = (newPage : number) => {
+    const changePage = (newPage: number) => {
         const url = new URL(window.location.toString())
         url.searchParams.set('page', String(newPage))
         window.history.pushState({}, '', url)
         setPage(newPage)
     }
 
-    const changeSearch = (digitedSearch : string) => {
+    const changeSearch = (digitedSearch: string) => {
         const url = new URL(window.location.toString())
         url.searchParams.set('search', digitedSearch)
         if (digitedSearch.length == 0) {
@@ -64,18 +65,20 @@ export const ParticipantsList = () => {
         setSearch(digitedSearch)
     }
 
-    const handleClickNextPage     = () => changePage(page + 1)
-    const handleClickFinalPage    = () => changePage(totalPages)
+    const handleClickNextPage = () => changePage(page + 1)
+    const handleClickFinalPage = () => changePage(totalPages)
     const handleClickPreviousPage = () => changePage(page - 1)
-    const handleClickFirstPage    = () => changePage(1)
+    const handleClickFirstPage = () => changePage(1)
 
     useEffect(() => {
         (async () => {
-            const data = await fetchParticipants({ page, search, delay: 0 })
+            setLoading(true)
+            const data = await fetchParticipants({ page, search, delay: 500 })
             setParticipants(data.participants)
             setTotalPages(Math.ceil(data.total / LIMIT_PARTICIPANTS_PER_PAGE))
+            setLoading(false)
         })()
-    }, [page, search, setTotalPages, setParticipants])
+    }, [page, search, setTotalPages, setParticipants, setLoading])
     return (
         <main>
             <Column className="gap-5">
@@ -95,6 +98,7 @@ export const ParticipantsList = () => {
                     </Row>
                 </header>
                 <Table
+                    loading={loading}
                     data={participants}
                     columns={[
                         {
@@ -129,8 +133,8 @@ export const ParticipantsList = () => {
                                 <span>
                                     {
                                         col.id == 'checkInAt'
-                                        ? !row.checkInAt ? <span className="py-1 px-2 rounded-md bg-rose-700/10 text-rose-700">Check-in pendente</span> : dayjs().from(dateAt)
-                                        : dayjs().from(dateAt)
+                                            ? !row.checkInAt ? <span className="py-1 px-2 rounded-md bg-rose-700/10 text-rose-700">Check-in pendente</span> : dayjs().from(dateAt)
+                                            : dayjs().from(dateAt)
                                     }
                                 </span>
                             )

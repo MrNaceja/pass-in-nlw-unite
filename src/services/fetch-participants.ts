@@ -8,7 +8,7 @@ export type TParticipant = {
     checkInAt?: Date
 }
 
-const ALL_PARTICIPANTS : TParticipant[] = Array.from({ length: 212 }).map((_, i) => ({
+const ALL_PARTICIPANTS : TParticipant[] = Array.from({ length: 6 }).map((_, i) => ({
     id: faker.string.nanoid(),
     email: faker.internet.email().toLowerCase(),
     name: faker.person.fullName(),
@@ -27,7 +27,6 @@ interface IFetchParticipantsReturn {
     participants: TParticipant[]
 }
 export const fetchParticipants = ({ page = 1, search, limit = 10, delay = 3000 } : IFetchParticipantsOptions) : Promise<IFetchParticipantsReturn> => {
-    console.log(search, page)
     return new Promise(resolve => setTimeout(() => {
         const withSearch = ALL_PARTICIPANTS
                             .filter(participant => (search && search.length > 0) ? participant.name.includes(search) : true)
