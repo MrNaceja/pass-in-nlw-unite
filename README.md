@@ -1,30 +1,11 @@
-# React + TypeScript + Vite
+# NLW Unite Edição 2024 (Rocketseat) - Pass.in
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicação Front-end com React para gerenciamento de participantes.
 
-Currently, two official plugins are available:
+![Captura de tela 2024-04-04 200742](https://github.com/MrNaceja/pass-in-nlw-unite/assets/71296941/c6916a84-22b9-4b83-b685-8e61cfddc1ec)
+![Captura de tela 2024-04-04 200806](https://github.com/MrNaceja/pass-in-nlw-unite/assets/71296941/1c9dc99e-c938-4662-987f-28dff0e20825)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Conhecimentos Aplicados
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+* Prática de SPA com React + Tailwind
+* Gerenciamento de Estado de URL (Parâmetros de URL)
